@@ -30,7 +30,7 @@ invalido [^{{minuscula}{mayuscula}{numero}{simbolo}{linea}\t" "}]
 {mayuscula} { cant_mayus++; yylval = cant_mayus; return MAY;};
 {numero} { cant_num++; yylval = cant_num; return NUM;};
 {simbolo} { cant_simb++; yylval = cant_simb; return SIM;};
-{linea} { printf("\n"); return FIN; };
+{linea} { printf("\n");};
 {invalido} { cant_inva++; yylval = cant_inva; return ERROR1;};
 {minuscula}{4} { comprobar(yytext); };
 {numero}{4} { comprobar(yytext); };

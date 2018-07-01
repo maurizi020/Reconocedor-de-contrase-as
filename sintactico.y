@@ -1,10 +1,13 @@
-/**********Definiciones**********/
+/**********DEFINICIONES DE C**********/
 
 %{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+extern int yylex(void);
+extern char *yytext;
+void yyerror(char *s);
 void valida();
 
 int cant_min_y = 0;
@@ -16,13 +19,15 @@ int band_1 = 1;
 
 %}
 
+ /**********DEFINICIONES DE BISON*********/
 %token MIN
 %token MAY
 %token NUM
 %token SIM
 %token ERROR1
-%token FIN
 %start clave
+
+ /**********REGLAS*********/
 
 %%
 
@@ -40,6 +45,8 @@ clave: MIN clave { cant_min_y = $1;}
 ;
 
 %%
+
+/**********FUNIONES ADICIONALES*********/
 
 void valida()
 {
@@ -87,3 +94,15 @@ void valida()
     }
 }
 
+void yyerror(char *s)
+{
+  printf("%s esto es un error ni idea de cuando ocurre\n", s);
+}
+
+int main()
+{
+  if (yyparse())
+    fprintf(stderr, "Successful parsing.\n");
+  else
+    fprintf(stderr, "error found.\n");
+} 

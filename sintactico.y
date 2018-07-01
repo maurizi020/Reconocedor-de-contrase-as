@@ -6,7 +6,7 @@
 #include <string.h>
 
 extern int yylex(void);
-extern char *yytext;
+extern char yytext[];
 void yyerror(char *s);
 void valida();
 
@@ -20,6 +20,7 @@ int band_1 = 1;
 %}
 
  /**********DEFINICIONES DE BISON*********/
+
 %token MIN
 %token MAY
 %token NUM

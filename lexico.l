@@ -6,7 +6,7 @@
 #include <string.h>
 #include "sintactico.tab.h"
 
-void comprobar(char *c);
+void comprobar(char c[]);
 
 int cant_min = 0;
 int cant_mayus = 0;
@@ -21,6 +21,7 @@ numero [0-9]
 simbolo [=*-_.@&]
 linea [\n]
 invalido [^{{minuscula}{mayuscula}{numero}{simbolo}{linea}\t" "}]
+%array
 
 %%
 
@@ -38,16 +39,15 @@ invalido [^{{minuscula}{mayuscula}{numero}{simbolo}{linea}\t" "}]
 
 %%
  /**********FUNCIONES DEFINIDAS POR EL USUARIO**********/
-void comprobar(char *c)
+void comprobar(char c[])
 {
-    int i,bandera;
+    int i,bandera,tam;
     bandera = 1;
-    char *cadena,*aux;
+    tam = strlen(yytext);
 
-    for(cadena = c; cadena < cadena + 4; cadena++)
+    for(i = 0; i < tam - 1; i++)
     {
-        aux = cadena+1;
-        if(*cadena != *aux)
+        if(c[i] != c[i+1])
         {
             bandera = 0;
         }

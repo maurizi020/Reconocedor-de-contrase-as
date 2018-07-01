@@ -1,2 +1,2 @@
-# Reconocedor-de-contrase-as
-Reconocedor de contraseñas utilizando un analizador lexico(flex) y sintactico(bison)
+# Reconocedor-de-contraseñas
+Reconocedor de contraseñas utilizando un analizador léxico(flex) y sintáctico(bison)

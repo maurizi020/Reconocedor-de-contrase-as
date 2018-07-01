@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-int cant_min = 0;
-int cant_mayus = 0;
-int cant_num = 0;
-int cant_simb = 0;
-int cant_inva = 0;
-int band = 1;
+void valida();
+
+int cant_min_y = 0;
+int cant_mayus_y = 0;
+int cant_num_y = 0;
+int cant_simb_y = 0;
+int cant_inva_y = 0;
+int band_1 = 1;
 
 %}
 
@@ -19,28 +21,22 @@ int band = 1;
 %token NUM
 %token SIM
 %token ERROR1
-%token ERROR2
 %token FIN
-%start inicio
+%start clave
 
 %%
 
-
-inicio: FIN
+clave: MIN clave { cant_min_y = $1;}
 |
-    clave FIN {valida();};
-
-clave: MIN clave { cant_min = $1;}
+    MAY clave {cant_mayus_y = $1;}
 |
-    MAY clave {cant_mayus = $1;}
+    NUM clave {cant_num_y = $1;}
 |
-    NUM clave {cant_num = $1;}
+    SIM clave {cant_simb_y = $1;}
 |
-    SIM clave {cant_simb = $1;}
+    ERROR1 clave {cant_inva_y = $1;}
 |
-    ERROR1 clave {cant_inva = $1;}
-|
-    ERROR2 clave {printf("no pueden estar mas de 3 veces el mismo numero o letra juntos\n");}
+    '\n' {valida();}
 ;
 
 %%
@@ -49,43 +45,43 @@ void valida()
 {
     int total;
 
-    total = cant_min + cant_num + cant_simb + cant_mayus;
+    total = cant_min_y + cant_num_y + cant_simb_y + cant_mayus_y;
     if(total > 15)
     {
         printf("la contraseña no puede ser mayor a 15 caracteres\n");
-        band = 0;
+        band_1 = 0;
     }
-    if(cant_inva)
+    if(cant_inva_y)
     {
         printf("la contraseña no puede tener simbolos que no sean =,&,-,_,.,*\n");
-        band = 0;
+        band_1 = 0;
     }
     if(total < 8)
     {
         printf("la contraseña no puede ser menor a 8 caracteres\n");
-        band = 0;
+        band_1 = 0;
     }
-    if(!cant_min)
+    if(!cant_min_y)
     {
         printf("la contraseña tiene que tener al menos una letra minuscula\n");
-        band = 0;
+        band_1 = 0;
     }
-    if(!cant_num)
+    if(!cant_num_y)
     {
         printf("la contraseña tiene que tener al menos un numero\n");
-        band = 0;
+        band_1 = 0;
     }
-    if(!cant_simb)
+    if(!cant_simb_y)
     {
         printf("la contraseña tiene que tener al menos uno de los siguientes simbolos: =,&,-,_,.,*\n ");
-        band = 0;
+        band_1 = 0;
     }
-    if(!cant_mayus)
+    if(!cant_mayus_y)
     {
         printf("la contraseña tiene que tener al menos una letra mayuscula\n");
-        band = 0;
+        band_1 = 0;
     }
-    if(band)
+    if(band_1)
     {
         printf("contraseña aceptada\n");
     }

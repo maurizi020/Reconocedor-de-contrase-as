@@ -20,12 +20,10 @@ int band_1 = 1;
 %}
 
  /**********DEFINICIONES DE BISON*********/
-
-%token MIN
-%token MAY
-%token NUM
-%token SIM
-%token ERROR1
+%union{
+ char cad;
+}
+%token<cad> MIN MAY NUM SIM ERROR1
 %start clave
 
  /**********REGLAS*********/

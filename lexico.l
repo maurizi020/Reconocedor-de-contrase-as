@@ -6,13 +6,6 @@
 #include <string.h>
 #include "sintactico.tab.h"
 
-void comprobar(char c[]);
-
-int cant_min = 0;
-int cant_mayus = 0;
-int cant_num = 0;
-int cant_simb = 0;
-int cant_inva = 0;
 %}
 
 minuscula [a-z]
@@ -20,40 +13,18 @@ mayuscula [A-Z]
 numero [0-9]
 simbolo [=*-_.@&]
 linea [\n]
-invalido [^{{minuscula}{mayuscula}{numero}{simbolo}{linea}\t" "}]
-%array
+invalido [!#$,/\:ˆ(){}’";%+?<>‘∼º¿¡áéíóúñÑ]
 
 %%
 
  /**********REGLAS**********/
 
-{minuscula} { cant_min++; yylval = cant_min; return MIN;};
-{mayuscula} { cant_mayus++; yylval = cant_mayus; return MAY;};
-{numero} { cant_num++; yylval = cant_num; return NUM;};
-{simbolo} { cant_simb++; yylval = cant_simb; return SIM;};
-{linea} { printf("\n");};
-{invalido} { cant_inva++; yylval = cant_inva; return ERROR1;};
-{minuscula}{4} { comprobar(yytext); };
-{numero}{4} { comprobar(yytext); };
-.   {printf("ERROR caracteres no validos");};
+{minuscula} { yylval.carcter = yytext; return MIN;};
+{mayuscula} { cant_mayus++; yylval.caracter = yytext; return MAY;};
+{numero} { yylval.caracter = yytext; return NUM;};
+{simbolo} { yylval.caracter = yytext; return SIM;};
+{linea} {return END;}
+{invalido} { yylval.caracter = yytext; return ERROR1;};
 
 %%
  /**********FUNCIONES DEFINIDAS POR EL USUARIO**********/
-void comprobar(char c[])
-{
-    int i,bandera,tam;
-    bandera = 1;
-    tam = strlen(yytext);
-
-    for(i = 0; i < tam - 1; i++)
-    {
-        if(c[i] != c[i+1])
-        {
-            bandera = 0;
-        }
-    }
-    if(bandera)
-    {
-        printf("no pueden estar mas de 3 veces el mismo numero o letra juntos\n");
-    }
-}

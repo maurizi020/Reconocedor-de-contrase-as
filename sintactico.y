@@ -10,11 +10,8 @@ extern char yytext[];
 void yyerror(char *s);
 void valida();
 
-int cant_min_y = 0;
-int cant_mayus_y = 0;
-int cant_num_y = 0;
-int cant_simb_y = 0;
-int cant_inva_y = 0;
+char cadena[30] = {'\0'};
+int indice = 0;
 int band_1 = 1;
 
 %}
@@ -24,23 +21,26 @@ int band_1 = 1;
  char cad;
 }
 %token<cad> MIN MAY NUM SIM ERROR1
-%start clave
+%start inicio
 
  /**********REGLAS*********/
 
 %%
 
-clave: MIN clave { cant_min_y = $1;}
+inicio:
+| clave {   valida(cadena);  memset(cadena,'\0',29); indice = 0;} inicio
+
+clave: MIN clave {cadena[indice] = $1; inidice++;}
 |
-    MAY clave {cant_mayus_y = $1;}
+    MAY clave {cadena[indice] = $1; inidice++;}
 |
-    NUM clave {cant_num_y = $1;}
+    NUM clave {cadena[indice] = $1; inidice++;}
 |
-    SIM clave {cant_simb_y = $1;}
+    SIM clave {cadena[indice] = $1; inidice++;}
 |
-    ERROR1 clave {cant_inva_y = $1;}
+    ERROR1 clave {cadena[indice] = $1; inidice++;}
 |
-    '\n' {valida();}
+    END {}
 ;
 
 %%
@@ -49,48 +49,7 @@ clave: MIN clave { cant_min_y = $1;}
 
 void valida()
 {
-    int total;
 
-    total = cant_min_y + cant_num_y + cant_simb_y + cant_mayus_y;
-    if(total > 15)
-    {
-        printf("la contraseña no puede ser mayor a 15 caracteres\n");
-        band_1 = 0;
-    }
-    if(cant_inva_y)
-    {
-        printf("la contraseña no puede tener simbolos que no sean =,&,-,_,.,*\n");
-        band_1 = 0;
-    }
-    if(total < 8)
-    {
-        printf("la contraseña no puede ser menor a 8 caracteres\n");
-        band_1 = 0;
-    }
-    if(!cant_min_y)
-    {
-        printf("la contraseña tiene que tener al menos una letra minuscula\n");
-        band_1 = 0;
-    }
-    if(!cant_num_y)
-    {
-        printf("la contraseña tiene que tener al menos un numero\n");
-        band_1 = 0;
-    }
-    if(!cant_simb_y)
-    {
-        printf("la contraseña tiene que tener al menos uno de los siguientes simbolos: =,&,-,_,.,*\n ");
-        band_1 = 0;
-    }
-    if(!cant_mayus_y)
-    {
-        printf("la contraseña tiene que tener al menos una letra mayuscula\n");
-        band_1 = 0;
-    }
-    if(band_1)
-    {
-        printf("contraseña aceptada\n");
-    }
 }
 
 void yyerror(char *s)
